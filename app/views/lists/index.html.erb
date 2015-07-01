@@ -1,0 +1,9 @@
+<h2>To Do List</h2>
+
+<div class="lists">
+  <% @lists.each do |List| %>
+    <%= render partial: "List", locals: { list: list } %>
+  <% end %>
+</div>
+
+<%= paginate @list %>
