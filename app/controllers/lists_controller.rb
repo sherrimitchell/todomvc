@@ -3,8 +3,13 @@ class ListsController < ActionController::Base
 
  def index
  	page = params[:page] || 1
-    @lists = List.order(written_at: :desc).page(page).per(5)
+    @lists = self.get(get_page).page
     render :index
+ end
+
+ def show
+ 	@lists = current_user.lists.find_by(list_name: list_name)
+ 	render :show
  end
 
  def new
@@ -13,25 +18,22 @@ class ListsController < ActionController::Base
  end
 
  def create
- 	@list = current_user.list.create( :user_id params :user_id, 
-							 		:list_name params[:list_name], 
-							 		:created_at params[:created_at])
+ 	items = params[:items]
+ 	list_items = Item.find_or_create_by[item_name: item]
+ 	@list = current_user.list.create(list_name: params[:list_name], 
+							 		created_at: params[:created_at],
+							 		items: list_items)
  	redirect_to user_lists_path(@list)
  end
 
- def show
- 	@lists = current_user.lists.find_by(:list_id params[:list_name])
- 	render :show
- end
-
  def edit
- 	@list = current_user.list.find_by(:list_id params[:list_id])
+ 	@list = current_user.list.find_by(list_name: list_name)
  	render :edit
  end
 
  def update
- 	@list = List.find(params[:id])
-    if @list.user. == current_user
+ 	@list = current_user.list.find_by(list_name: list_name)
+    if @list.user == current_user
       @list.update(list_name: params[:list_name], updated_at: params[:updated_at])
     else
       flash[:alert] = 'Only the author of a list may edit a list.'
@@ -40,11 +42,17 @@ class ListsController < ActionController::Base
  end
 
  def delete
- 	@list = List.find_by(params[:id])
+ 	@list = current_user.list.find_by(list_name: list_name)
  	if @list.user = current_user
  		@list.delete
  	else
  		flash[:alert] = 'Only the author of a list may delete a list.'
  	end
+ end
+
+ protected
+ def get_page(n)
+ 	page_offset = (n - 1) * 10
+ 	List.order(created_at: :desc).offset(page_offset).limit(10)
  end
 end

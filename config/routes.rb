@@ -1,11 +1,11 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: { sessions: "users/sessions" }
+  devise_for :users
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
   
-  root to: 'users#index'
+  root to: 'lists#index'
 
   get 'users/new', to: 'users#new'
   post 'users', to: 'users#create'
@@ -31,8 +31,8 @@ Rails.application.routes.draw do
   #   end
 
   resources :users do
-    resources :lists, only: [:index, :new, :create, :show, :edit, :update, :delete]
-      resources :items, only: [:new, :create, :show, :edit, :update, :delete]
+    resources :lists, only: [:index, :show, :new, :create, :edit, :update, :delete]
+      resources :items, except: [:index, :show]
     end
 
   # Example resource route with sub-resources:
