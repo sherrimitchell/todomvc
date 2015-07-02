@@ -32,7 +32,7 @@ class ListsController < ActionController::Base
  def update
  	@list = List.find(params[:id])
     if @list.user. == current_user
-      @list.update(list_name: params[:list_name], updated_at: params[:params])
+      @list.update(list_name: params[:list_name], updated_at: params[:updated_at])
     else
       flash[:alert] = 'Only the author of a list may edit a list.'
     end

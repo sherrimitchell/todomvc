@@ -4,11 +4,11 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'todomvc#index'
+  
+  root to: 'users#index'
 
-  post 'users/register', to: 'users#register'
-  post 'users/login', to: 'users#login'
- 
+  get 'users/new', to: 'users#new'
+  post 'users', to: 'users#create'
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
