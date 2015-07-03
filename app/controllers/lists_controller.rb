@@ -3,7 +3,8 @@ class ListsController < ActionController::Base
 
  def index
  	page = params[:page] || 1
-    @lists = self.get(get_page).page
+    @lists = current_user.lists.order(created_at: :desc)
+    user_lists = @lists.offset(10).limit(10)
     render :index
  end
 
@@ -13,16 +14,16 @@ class ListsController < ActionController::Base
  end
 
  def new
- 	@lists = current_user.list.new
+ 	@lists = current_user.lists.new
  	render :new
  end
 
  def create
  	items = params[:items]
- 	list_items = Item.find_or_create_by[item_name: item]
+ 	@items = Item.find_or_create_by[item_id: params[:item_id]]
  	@list = current_user.list.create(list_name: params[:list_name], 
 							 		created_at: params[:created_at],
-							 		items: list_items)
+							 		items: params[:items])
  	redirect_to user_lists_path(@list)
  end
 
@@ -42,7 +43,7 @@ class ListsController < ActionController::Base
  end
 
  def delete
- 	@list = current_user.list.find_by(list_name: list_name)
+ 	@list = current_user.list.find_by(list_name: list_name )
  	if @list.user = current_user
  		@list.delete
  	else
@@ -50,9 +51,4 @@ class ListsController < ActionController::Base
  	end
  end
 
- protected
- def get_page(n)
- 	page_offset = (n - 1) * 10
- 	List.order(created_at: :desc).offset(page_offset).limit(10)
- end
 end
