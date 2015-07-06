@@ -30,8 +30,7 @@ Rails.application.routes.draw do
   #     end
   #   end
 
-  resources :users do
-    resources :lists, only: [:index, :show, :new, :create, :edit, :update, :delete]
+    resources :lists, only: [:index, :show, :new, :create, :edit, :update, :delete] do
       resources :items, except: [:index, :show]
     end
 

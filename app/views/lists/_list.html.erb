@@ -1,5 +1,6 @@
 
-  
-  <div class="list">
-    <h2><%= link_to_unless_current list.list_name, user_list_path(list) %></h2>
-  </div>
+<div class="list">
+  <h2><%= link_to_unless_current list.id, list_path(list) %></h2>
+  <h3>List Date: <%= list.created_at %></h3>
+
+</div>

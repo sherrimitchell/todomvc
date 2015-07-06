@@ -1,8 +1,8 @@
+
 <%= form_tag(@action, method: @http_verb, class: 'list-form') do %>
   
   <div class="form-group">
     <%= label_tag(:list_name) %>
-    <%= text_field_tag(:list_name, @list, size: 40) %>
   </div>
 </br>
 
@@ -10,9 +10,7 @@
     <%= label_tag(:items, "To-do Items ") %>
     <br/>
     <%= label_tag(:item_name, "Item Name: ") %>
-    <%= text_field_tag(:item, @items, size: 40) %>
     <%= label_tag(:due_date, "Due Date: ") %>
-    <%= text_field_tag(:due_date) %>
     </div>
    <div class="item-button">
      <%= label_tag(:completed, "Item complete? ") %>
@@ -23,7 +21,4 @@
     <%= label_tag(:completed, "No") %>
    </div>
     
-  
-
-  <div><%= submit_tag 'Save', class: 'btn btn-default' %></div>
 <% end %>

@@ -20,8 +20,8 @@ class ItemsController < ActionController::Base
  end
 
  def update
- 	@item = Item.find-by(item_name: item_name)
- 	@item.update(item_name: item_name, due_date: due_date, updated_at: updated_at)
+ 	@item = @list.item.find_by(item_name: item_name)
+ 	@item.update(item_name: item_name, due_date: due_date, completed: completed, updated_at: updated_at)
  end
 
  def delete

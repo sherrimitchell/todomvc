@@ -1,20 +1,23 @@
-<%= render partial: "list", object: current_user.@list %>
+
+<%= render partial: "list", object: @list %>
+
+<div class="items">
+  <% if current_user %>
+    <%= render partial: " items/form", locals: { list: @list } %>
+  <% end %>
+
+  <% @list.items.each do |item| %>
+    <%= render partial: "items/item", locals: { item: item } %>
+  <% end %>
+</div>
+
 
 <div class="list-nav">
   <% if @list.user == current_user %>
-    <%= link_to "Edit List", edit_user_list_path(@list), class: 'btn btn-info' %>
-    <%= link_to "Delete List", user_list_path(@list), class: 'btn btn-danger',
+    <%= link_to "Edit List", edit_list_path(@list), class: 'btn btn-info' %>
+    <%= link_to "Delete List", list_path(@list), class: 'btn btn-danger',
         method: :delete,
         data: { confirm: "Are you sure you want to delete this list?"} %>
   <% end %>
 </div>
 
-<div class="list">
-  <% if current_user %>
-    <%= render partial: "_form", locals: { list: @list } %>
-  <% end %>
-
-  <% @items.each do |item| %>
-    <%= render partial: "items/item", locals: { item: item } %>
-  <% end %>
-</div>

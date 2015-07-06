@@ -2,6 +2,8 @@
 
 <div class="lists">
   <% @lists.each do |list| %>
-    <%= render partial: "list", locals: { list: list } %>
-  <% end %>
+  List Name: <%= list.list_name %> <br>
+  <%= render partial: "list", locals: { list: list } %>
+  <% end -%>
 </div>
+

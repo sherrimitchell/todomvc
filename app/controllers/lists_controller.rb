@@ -3,47 +3,46 @@ class ListsController < ActionController::Base
 
  def index
  	page = params[:page] || 1
-    @lists = current_user.lists.order(created_at: :desc)
-    user_lists = @lists.offset(10).limit(10)
+    @lists = List.find_by(id: id).order(created_at: :desc)
     render :index
  end
 
  def show
- 	@lists = current_user.lists.find_by(list_name: list_name)
+ 	@lists = List.find(params[:id])
  	render :show
  end
 
  def new
- 	@lists = current_user.lists.new
+ 	@lists = List.new
  	render :new
  end
 
  def create
  	items = params[:items]
  	@items = Item.find_or_create_by[item_id: params[:item_id]]
- 	@list = current_user.list.create(list_name: params[:list_name], 
+ 	@list = current_user.lists.create(list_name: params[:list_name], 
 							 		created_at: params[:created_at],
 							 		items: params[:items])
- 	redirect_to user_lists_path(@list)
+ 	redirect_to list_path(@list)
  end
 
  def edit
- 	@list = current_user.list.find_by(list_name: list_name)
+ 	@list = List.find_by(list_name: list_name)
  	render :edit
  end
 
  def update
- 	@list = current_user.list.find_by(list_name: list_name)
+ 	@list = List.find_by(list_name: list_name)
     if @list.user == current_user
-      @list.update(list_name: params[:list_name], updated_at: params[:updated_at])
+      List.update(list_name: params[:list_name], updated_at: params[:updated_at])
     else
       flash[:alert] = 'Only the author of a list may edit a list.'
     end
-    redirect_to user_list_path(@list)
+    redirect_to list_path(@list)
  end
 
  def delete
- 	@list = current_user.list.find_by(list_name: list_name )
+ 	@list = List.find_by(list_name: list_name )
  	if @list.user = current_user
  		@list.delete
  	else
