@@ -6,22 +6,6 @@
   </div>
 </br>
 
-  <div class="form-group">
-    <%= label_tag(:items, "To-do Items ") %>
-    <br/>
-    <%= label_tag(:item_name, "Item Name: ") %>
-    <%= text_field_tag(:item, @items, size: 40) %>
-    <%= label_tag(:due_date, "Due Date: ") %>
-    <%= text_field_tag(:due_date) %>
-    </div>
-   <div class="item-button">
-     <%= label_tag(:completed, "Item complete? ") %>
-    
-    <%= radio_button('item', 'completed', 'true') %>
-     <%= label_tag(:completed, "Yes") %>
-     <%= radio_button('item',  'completed', 'false') %>
-    <%= label_tag(:completed, "No") %>
-   </div>
     
   
 

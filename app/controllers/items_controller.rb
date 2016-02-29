@@ -6,12 +6,12 @@ class ItemsController < ActionController::Base
  end
 
  def create
- 	@item = @list.item.create(:item_id params :item_id, 
-					 		:list_id params[:list_id],
-					 		:item_name params[:item_name],
-					 		:due_date params[:due_date],
-					 		:completed params[:completed]
-					 		:created_at params[:created_at])
+ 	@item = @list.item.create(params [:item_id], 
+					 		list_id: params[:list_id],
+					 		item_name: params[:item_name],
+					 		due_date: params[:due_date],
+					 		completed: params[:completed]
+					 		created_at: params[:created_at])
  end
 
  def edit

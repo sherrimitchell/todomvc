@@ -1,44 +1,49 @@
 class ListsController < ActionController::Base
- before_action :authenticate_user!
+ before_action :authenticate_user!, only: [:create, :update, :delete]
 
  def index
- 	page = params[:page] || 1
-    @lists = List.find_by(id: id).order(created_at: :desc)
+ 	@user = User.find_by(id: params[:user_id])
+  page = params[:page] || 1
+  if @user == current_user
+    @todo_lists = Todo_list.order(created_at: :desc).page(page).per(5)
     render :index
- end
+    end
+  end
+ 
 
  def show
- 	@lists = List.find(params[:id])
+ 	@todo_lists = Todo_list.find(params[:id])
  	render :show
  end
 
  def new
- 	@lists = List.new
+ 	if @user == current_user
+  @todo_list = Todo_list.new
  	render :new
  end
 
  def create
- 	items = params[:items]
- 	@items = Item.find_or_create_by[item_id: params[:item_id]]
- 	@list = current_user.lists.create(list_name: params[:list_name], 
-							 		created_at: params[:created_at],
-							 		items: params[:items])
- 	redirect_to list_path(@list)
+  @todo_list = current_user.todo_lists.create(list_params)
+    if @todo_lists.save
+      respond_to do |format|
+      format.html { redirect_to todo_list_path(@todo_list) }
+      format.js { render :create }
+    end
+  end	
  end
 
  def edit
- 	@list = List.find_by(list_name: list_name)
+ 	@todo_list = todo_list.find_by(list_name: list_name)
  	render :edit
  end
 
  def update
- 	@list = List.find_by(list_name: list_name)
-    if @list.user == current_user
-      List.update(list_name: params[:list_name], updated_at: params[:updated_at])
+  if @user == current_user
+    @todo_list.update(list_params)
     else
       flash[:alert] = 'Only the author of a list may edit a list.'
     end
-    redirect_to list_path(@list)
+    redirect_to list_item_path(@list)
  end
 
  def delete
@@ -48,6 +53,12 @@ class ListsController < ActionController::Base
  	else
  		flash[:alert] = 'Only the author of a list may delete a list.'
  	end
+ end
+
+ private
+ def list_params
+  params.require[:todo_list].permit(:title)
+end
  end
 
 end

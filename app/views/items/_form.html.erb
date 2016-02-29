@@ -2,12 +2,6 @@
 <%= form_tag(@action, method: @http_verb, class: 'list-form') do %>
   
   <div class="form-group">
-    <%= label_tag(:list_name) %>
-    <%= text_field_tag(:list_name, @list, size: 40) %>
-  </div>
-</br>
-
-  <div class="form-group">
     <%= label_tag(:items, "To-do Items ") %>
     <br/>
     <%= label_tag(:item_name, "Item Name: ") %>
@@ -24,7 +18,5 @@
     <%= label_tag(:completed, "No") %>
    </div>
     
-  
-
   <div><%= submit_tag 'Save', class: 'btn btn-default' %></div>
 <% end %>
