@@ -1,4 +1,4 @@
-class ListsController < ActionController::Base
+class TodoListsController < ActionController::Base
  before_action :authenticate_user!, only: [:create, :update, :delete]
 
  def index
@@ -17,48 +17,52 @@ class ListsController < ActionController::Base
  end
 
  def new
- 	if @user == current_user
-  @todo_list = Todo_list.new
+  @todo_list = current_user.todo_list.new(list_params)
  	render :new
  end
 
  def create
   @todo_list = current_user.todo_lists.create(list_params)
+
+  respond_to do |format|
     if @todo_lists.save
-      respond_to do |format|
       format.html { redirect_to todo_list_path(@todo_list) }
-      format.js { render :create }
+    else
+      format.html { render :new }
     end
   end	
  end
 
  def edit
- 	@todo_list = todo_list.find_by(list_name: list_name)
+ 	@todo_list = Todo_list.find_by(title: title)
  	render :edit
  end
 
  def update
+  @user = User.find_by(id: params[:user_id])
   if @user == current_user
     @todo_list.update(list_params)
-    else
+    respond_to do |format|
+      format.html { redirect_to todo_list_item_path(@todo_list) }
+    end
       flash[:alert] = 'Only the author of a list may edit a list.'
     end
-    redirect_to list_item_path(@list)
+    
  end
 
  def delete
- 	@list = List.find_by(list_name: list_name )
- 	if @list.user = current_user
- 		@list.delete
+ 	@todo_list = Todo_list.find_by(title: title)
+ 	if @todo_list.user == current_user
+ 		@todo_list.destroy
  	else
  		flash[:alert] = 'Only the author of a list may delete a list.'
  	end
+  redirect_to todo_list_path(@todo_list)
  end
 
  private
  def list_params
   params.require[:todo_list].permit(:title)
-end
- end
+  end
 
 end

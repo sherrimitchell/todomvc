@@ -1,4 +1,4 @@
-class ItemsController < ActionController::Base
+class ToDoItemsController < ActionController::Base
   before_action :authenticate_user!
 
  def new

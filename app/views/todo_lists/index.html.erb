@@ -1,0 +1,9 @@
+<h2>To Do Lists</h2>
+
+<div class="todo_lists">
+  <% @todo_lists.each do |list| %>
+  List Name: <%= todo_list.title %> <br>
+  <%= render partial: "todo_list", locals: { todo_list: todo_list } %>
+  <% end -%>
+</div>
+

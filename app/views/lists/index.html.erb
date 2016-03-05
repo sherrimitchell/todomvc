@@ -1,9 +1,0 @@
-<h2>To Do List</h2>
-
-<div class="lists">
-  <% @lists.each do |list| %>
-  List Name: <%= list.list_name %> <br>
-  <%= render partial: "list", locals: { list: list } %>
-  <% end -%>
-</div>
-
