@@ -1,68 +1,66 @@
 class TodoListsController < ActionController::Base
- before_action :authenticate_user!, only: [:create, :update, :delete]
+ before_action :authenticate_user!
+ before_action :set_todo_list, only: [:show, :edit, :update, :destroy]
 
  def index
- 	@user = User.find_by(id: params[:user_id])
-  page = params[:page] || 1
-  if @user == current_user
-    @todo_lists = Todo_list.order(created_at: :desc).page(page).per(5)
-    render :index
-    end
+  # @user = User.find_by(id: params[:user_id])
+  @todo_lists = current_user.todo_lists.order(created_at: :desc).page(params[:page]).per(params[:per])
+  # render :index
   end
- 
 
  def show
- 	@todo_lists = Todo_list.find(params[:id])
- 	render :show
+ 	@todo_lists = TodoList.find_by(id: params[:id])
  end
 
  def new
-  @todo_list = current_user.todo_list.new(list_params)
- 	render :new
+  @todo_list = current_user.todo_list.new
+ end
+
+ def edit
  end
 
  def create
   @todo_list = current_user.todo_lists.create(list_params)
 
   respond_to do |format|
-    if @todo_lists.save
-      format.html { redirect_to todo_list_path(@todo_list) }
+    if @todo_list.save
+      format.html { redirect_to "/todo_lists", notice: 'Todo list was successfully created.' }
+      format.json { render :show, status: :created, location: @todo_list }
     else
       format.html { render :new }
+      format.json { render json: @todo_list.errors, status: :unprocessable_entity }
     end
-  end	
- end
-
- def edit
- 	@todo_list = Todo_list.find_by(title: title)
- 	render :edit
+  end
  end
 
  def update
-  @user = User.find_by(id: params[:user_id])
-  if @user == current_user
-    @todo_list.update(list_params)
-    respond_to do |format|
-      format.html { redirect_to todo_list_item_path(@todo_list) }
-    end
-      flash[:alert] = 'Only the author of a list may edit a list.'
-    end
-    
- end
+  respond_to do |format|
+    if @todo_list.update(list_params)
+      format.html { redirect_to todo_list_path(@todo_list), notice: 'Todo list was successfully updated.' }
+      format.json { render :show, status: :ok, location: @todo_list }
+    else
+      format.html { render :edit }
+      format.json { render json: @todo_list.errors, status: :unprocessable_entity }
+      end
+     end
+  end
 
  def delete
- 	@todo_list = Todo_list.find_by(title: title)
- 	if @todo_list.user == current_user
- 		@todo_list.destroy
- 	else
- 		flash[:alert] = 'Only the author of a list may delete a list.'
+  @todo_list.destroy
+
+  respond_to do |format|
+    format.html { redirect_to todo_lists(@todo_list), notice: 'Todo list was successfully deleted.'}
+    format.json {head :no_content }
  	end
-  redirect_to todo_list_path(@todo_list)
  end
 
  private
+ def set_todo_list
+  @todo_list = TodoList.find(params[:id])
+ end
+
  def list_params
-  params.require[:todo_list].permit(:title)
-  end
+  params.require(:todo_list).permit(:user_id, :title, :task)
+ end
 
 end

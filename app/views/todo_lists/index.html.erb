@@ -1,9 +1,16 @@
-<h2>To Do Lists</h2>
+<table class="table table-hover">
+	<thead>
+      <tr>
+        <th><i class="glyphicon glyphicon-chevron-down"></i> what needs to be done?</th>
+        <th colspan="3"></th>
+      </tr>
+  </thead>
 
-<div class="todo_lists">
-  <% @todo_lists.each do |list| %>
-  List Name: <%= todo_list.title %> <br>
-  <%= render partial: "todo_list", locals: { todo_list: todo_list } %>
-  <% end -%>
+<div class="todo_lists"
+	<tbody>
+    <% @todo_lists.each do |todo_list| %>
+			<%= render partial: "todo_list", locals: { todo_list: todo_list } %>
+    <% end -%>
+  </tbody>
 </div>
-
+</table>

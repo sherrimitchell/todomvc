@@ -1,5 +1,5 @@
-class List < ActiveRecord::Base
+class TodoList < ActiveRecord::Base
 	belongs_to :user
-	has_many :todo_items
-	validates :name, presence: true
+	
+	validates :title, presence: true
 end

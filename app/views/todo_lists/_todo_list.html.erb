@@ -1,0 +1,9 @@
+<div class="todo_list">
+  <tr>
+    <th><%= link_to_unless_current todo_list.title, todo_list_path(todo_list) %></th>
+    <td><%= todo_list.task %>
+    <td><%= link_to_unless_current 'Show', todo_list_path(current_user.id, @todo_list) %></td>
+    <td><%= link_to 'Edit', edit_todo_list_path(current_user.id, @todo_list) %></td>
+    <td><%= link_to 'Delete', todo_list_path(current_user.id, @todo_list), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+</div>

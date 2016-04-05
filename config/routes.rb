@@ -14,14 +14,10 @@ Rails.application.routes.draw do
   end
     
 
-  resources :user, only: [:index, :show] do
-      resources :todo_items, only: [:index, :show]
-    end
+  resources :user do
+    resources :todo_lists, only: [:index, :show]
+  end
 
-    resources :todo_lists do
-      resources :todo_items
-    end
-
-    resources :todo_items
+    resources :todo_lists
   
 end

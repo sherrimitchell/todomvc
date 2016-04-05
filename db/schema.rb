@@ -11,22 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160228233100) do
-
-  create_table "todo_items", force: :cascade do |t|
-    t.string   "list_id"
-    t.string   "item_name"
-    t.datetime "due_date"
-    t.boolean  "completed"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
+ActiveRecord::Schema.define(version: 20160401205554) do
 
   create_table "todo_lists", force: :cascade do |t|
-    t.string   "user_id"
+    t.integer  "user_id"
     t.string   "title"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.text     "task"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", force: :cascade do |t|
