@@ -1,5 +1,3 @@
 class TodoList < ActiveRecord::Base
-	belongs_to :user
-	
-	validates :title, presence: true
+  has_many :todo_items
 end

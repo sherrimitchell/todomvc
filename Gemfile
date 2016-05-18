@@ -36,7 +36,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'bootstrap-sass'
 
 # Use devise for user authenticaton
-gem 'devise'
+# gem 'devise'
 
 # Kaminari for Pagination
 gem 'kaminari'
@@ -53,4 +53,3 @@ group :development, :test do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 end
-

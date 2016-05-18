@@ -1,35 +1,29 @@
-class TodoItemsController < ActionController::Base
-  before_action :authenticate_user!
+class TodoItemsController < ApplicationController
+  before_action :set_todo_list
 
- def new
- 	render :new
- end
+  def create
+    @todo_item = @todo_list.todo_items.create(todo_item_params)
+    redirect_to @todo_list
+  end
 
- def create
- 	@item = @list.item.create(params [:item_id], 
-					 		list_id: params[:list_id],
-					 		item_name: params[:item_name],
-					 		due_date: params[:due_date],
-					 		completed: params[:completed]
-					 		created_at: params[:created_at])
- end
+  def destroy
+    @todo_item = @todo_list.todo_items.find(params[:id])
+    if @todo_item.destroy
+      flash[:success] = "Todo list item was deleted."
+    else
+      flash[:error] = "Todo list item could not be deleted."
+    end
+    redirect_to @todo_list
+  end
 
- def edit
- 	@item = @list.item.find_by(item_name: item_name)
- 	render :edit
- end
+  private
 
- def update
- 	@item = @list.item.find_by(item_name: item_name)
- 	@item.update(item_name: item_name, due_date: due_date, completed: completed, updated_at: updated_at)
- end
+  def set_todo_list
+    @todo_list = TodoList.find(params[:todo_list_id])
+  end
 
- def delete
- 	@item = item.find_by(item_name: item_name)
- 	if @item.user = current_user
- 		@item.delete
- 	else
- 		flash[:alert] = 'Only the author of an item may delete a item.'
- 	end
- end
+  def todo_item_params
+    params[:todo_item].permit(:content)
+  end
+
 end
