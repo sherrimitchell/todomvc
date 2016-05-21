@@ -36,7 +36,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'bootstrap-sass'
 
 # Use devise for user authenticaton
-# gem 'devise'
+gem 'devise'
 
 # Kaminari for Pagination
 gem 'kaminari'
